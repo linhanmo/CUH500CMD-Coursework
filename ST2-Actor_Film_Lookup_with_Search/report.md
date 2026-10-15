@@ -1,0 +1,19 @@
+# Standard Task 2 : Actor Film Lookup with Search
+
+The solution separates the two query paths required by the specification. For actor lookups, `binary_search` locates the first occurrence of the actor in the list sorted by actor name. The search records every match and continues shrinking the upper bound, so the returned index is the leftmost occurrence. Once found, `collect_films_for_actor` scans rightward until the actor changes, exploiting the contiguity guaranteed by alphabetical ordering. The complexity is \(O(\log n)\) for the binary search plus \(O(k)\) for the rightward scan, where \(k\) is the number of entries for that actor. This is asymptotically better than linear scanning and satisfies the rule that linear search is only a fallback.
+
+For film lookups, `get_actors_for_film` performs a full scan because the list is not sorted by film; there is no ordering to exploit. The collected actors are stored in a set to remove duplicates and then sorted alphabetically. This yields \(O(n)\) time and \(O(m)\) space, where \(m\) is the number of matching actors. The asymmetry between the two paths is deliberate: actor queries benefit from ordering, film queries cannot. Recognising this asymmetry is the central design decision of the task.
+
+Automatic type detection is performed by attempting the actor path first, then the film path. If both fail exactly, `fuzzy_lookup` is invoked. This extra function uses `difflib.get_close_matches` with `SequenceMatcher` ratios to compare the query against all unique actors and films. The design is elegant in that the same primitive (string similarity) serves both spell-correction and type disambiguation. However, it is not without cost: `get_close_matches` is roughly \(O(n \cdot L^2)\) in the worst case for sequence length \(L\), and it is invoked on every miss. For the small lists in this task this is negligible, but for large datasets an inverted index or a BK-tree would be more appropriate.
+
+A critical observation concerns the specification's instruction not to pre-index the entire list. The implementation respects this: `fuzzy_lookup` builds a temporary list of unique actors and films on each call, and that structure is discarded afterwards. Strictly, `get_unique_actors` exploits the sorted order and runs in \(O(n)\), so the temporary cost is linear rather than quadratic. This is a defensible reading of the rule, which forbids a persistent dictionary/map rather than any transient structure.
+
+When no match and no fuzzy candidate exist, the fallback uses a heuristic: a query beginning with an uppercase letter and containing a space is treated as an actor; otherwise it is treated as a film. This is not a guarantee — "Inception" would be misclassified as an actor if it contained a space — but the specification does not provide a reliable disambiguator for unseen strings, so any heuristic is inherently limited. The alternative, defaulting everything to film, would produce the wrong branch for misspelt actors that fall below the fuzzy threshold.
+
+From an elegance standpoint, the Python code is compact and uses built-in `set` and `difflib` operations instead of hand-written loops. The trade-off is readability of the fallback logic, which now intertwines fuzzy matching, random selection, and the shape-based heuristic. A more modular design would extract the fallback into its own function and document the heuristic explicitly. Given the small scale and the strong built-in support, the current approach is justified.
+
+## References
+
+Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2009). *Introduction to algorithms* (3rd ed.). MIT Press.
+Python Software Foundation. (2024). *difflib — Helpers for computing deltas*. Python 3 documentation. https://docs.python.org/3/library/difflib.html
+Python Software Foundation. (2024). *bisect — Array bisection algorithm*. Python 3 documentation. https://docs.python.org/3/library/bisect.html

@@ -1,0 +1,86 @@
+{
+    "nodes": {
+        "STT": {
+            "type": "Speech-to-Text",
+            "status": "active"
+        },
+        "Summariser": {
+            "type": "Text-Summariser",
+            "status": "degraded"
+        },
+        "Sentiment": {
+            "type": "Sentiment-Classifier",
+            "status": "active"
+        },
+        "Topic": {
+            "type": "Topic-Detector",
+            "status": "active"
+        },
+        "Recommender": {
+            "type": "Recommendation-Engine",
+            "status": "active"
+        },
+        "DeadNode": {
+            "type": "Deprecated-Model",
+            "status": "active"
+        }
+    },
+    "edges": [
+        {
+            "source": "STT",
+            "target": "Summariser",
+            "latency": 45,
+            "payload": 12,
+            "confidence": 0.98,
+            "transform": "text_summary"
+        },
+        {
+            "source": "STT",
+            "target": "Topic",
+            "latency": 30,
+            "payload": 50,
+            "confidence": 0.85,
+            "transform": "embedding_transfer"
+        },
+        {
+            "source": "Summariser",
+            "target": "Sentiment",
+            "latency": 20,
+            "payload": 4,
+            "confidence": 0.95,
+            "transform": "sentiment_analysis"
+        },
+        {
+            "source": "Sentiment",
+            "target": "STT",
+            "latency": 10,
+            "payload": 2,
+            "confidence": 0.99,
+            "transform": "feedback_loop"
+        },
+        {
+            "source": "Topic",
+            "target": "Recommender",
+            "latency": 15,
+            "payload": 8,
+            "confidence": 0.9,
+            "transform": "topic_labels"
+        },
+        {
+            "source": "Topic",
+            "target": "STT",
+            "latency": 5,
+            "payload": 1,
+            "confidence": 0.8,
+            "transform": "feedback"
+        },
+        {
+            "source": "Recommender",
+            "target": "STT",
+            "latency": 5,
+            "payload": 1,
+            "confidence": 0.8,
+            "transform": "feedback"
+        }
+    ]
+}
