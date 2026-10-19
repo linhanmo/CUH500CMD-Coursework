@@ -142,10 +142,10 @@ class AIGraph:
             settled.add(u)
             for v in self._out.get(u, ()):
                 meta = self._edges.get((u, v))
-                if meta is None:
+                if meta == None:
                     continue
                 w = weight_fn(meta)
-                if w is None or not math.isfinite(w) or w < 0:
+                if w == None or not math.isfinite(w) or w < 0:
                     continue
                 nd = d + w
                 if nd < dist.get(v, math.inf):
@@ -158,7 +158,7 @@ class AIGraph:
     def _reconstruct(prev, dst):
         path = []
         cur = dst
-        while cur is not None:
+        while cur != None:
             path.append(cur)
             cur = prev[cur]
         path.reverse()
@@ -251,7 +251,7 @@ class AIGraph:
                     self._out[e[0]].add(e[1])
                     self._in[e[1]].add(e[0])
 
-                if spur_path is None:
+                if spur_path == None:
                     continue
 
                 candidate = root_path[:-1] + spur_path

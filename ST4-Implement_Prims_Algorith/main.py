@@ -22,7 +22,7 @@ class Graph:
             for v in range(self.V):
                 if (
                     self.graph[u][v] > 0
-                    and mstSet[v] is False
+                    and mstSet[v] == False
                     and key[v] > self.graph[u][v]
                 ):
                     key[v] = self.graph[u][v]
@@ -34,7 +34,7 @@ class Graph:
         min_value = sys.maxsize
         min_index = -1
         for v in range(self.V):
-            if key[v] < min_value and mstSet[v] is False:
+            if key[v] < min_value and mstSet[v] == False:
                 min_value = key[v]
                 min_index = v
         return min_index
@@ -95,7 +95,7 @@ class Graph:
         edge_count = 0
         for v in range(1, self.V):
             u = parent[v]
-            if u is None or u < 0:
+            if u == None or u < 0:
                 return False
             if not union(u, v):
                 return False  # cycle detected

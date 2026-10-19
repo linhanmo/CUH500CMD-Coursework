@@ -107,7 +107,7 @@ class Graph:
         # Path reconstruction
         shortest_path = [end]
         u_idx = self.getIndex(end)
-        while self.previous[u_idx] is not None:
+        while self.previous[u_idx] != None:
             shortest_path.insert(0, self.previous[u_idx])
             u_idx = self.getIndex(self.previous[u_idx])
 

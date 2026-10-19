@@ -9,7 +9,7 @@ class Graph(object):
 
     # Add a vertex
     def add_vertex(self, vertex_id=None):
-        if vertex_id is None:
+        if vertex_id == None:
             vertex_id = self.size + 1
 
         if vertex_id <= 0:
@@ -30,7 +30,6 @@ class Graph(object):
 
     # Add an edge
     def add_edge(self, v1, v2):
-        """Add an undirected edge between vertices v1 and v2 (1-based ids)."""
         self._check_vertex(v1)
         self._check_vertex(v2)
         if v1 == v2:
@@ -58,7 +57,6 @@ class Graph(object):
             print(row_label + row_values)
 
     def _check_vertex(self, v):
-        """Raise ValueError if v is not a valid vertex id."""
         if not isinstance(v, int) or v < 1 or v > self.size:
             raise ValueError(f"Invalid vertex id: {v}")
 

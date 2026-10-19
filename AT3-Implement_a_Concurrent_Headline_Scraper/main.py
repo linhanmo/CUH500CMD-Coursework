@@ -408,7 +408,7 @@ def scrape_one(url, timeout=TOTAL_TIMEOUT, max_retries=2, rate_limiter=None):
     }
 
     def fetch_and_parse():
-        if rate_limiter is not None:
+        if rate_limiter != None:
             rate_limiter.acquire(url)
 
         # Newspaper
@@ -445,7 +445,7 @@ def scrape_one(url, timeout=TOTAL_TIMEOUT, max_retries=2, rate_limiter=None):
         outcome["elapsed"] = round(time.monotonic() - started, 3)
         return outcome
 
-    if titles is None:
+    if titles == None:
         outcome["error"] = f"{type(last_exc).__name__}: {last_exc}"
         outcome["elapsed"] = round(time.monotonic() - started, 3)
         return outcome
@@ -535,7 +535,7 @@ class HeadlineScraper:
 # Statistics
 def compute_stats(results, wall_time=None):
     total = len(results)
-    ok = sum(1 for r in results if r["error"] is None)
+    ok = sum(1 for r in results if r["error"] == None)
     timeouts = sum(1 for r in results if r["error"] and "timeout" in r["error"].lower())
     shortages = sum(1 for r in results if r["shortage"])
     total_headlines = sum(r["count"] for r in results)
@@ -560,7 +560,7 @@ def compute_stats(results, wall_time=None):
             if elapsed_values
             else 0.0
         ),
-        "wall_time": round(wall_time, 3) if wall_time is not None else None,
+        "wall_time": round(wall_time, 3) if wall_time != None else None,
         "throughput": (
             round(total / wall_time, 3) if wall_time and wall_time > 0 else None
         ),
@@ -571,7 +571,7 @@ def compute_stats(results, wall_time=None):
 def print_results(label, results, stats):
     print(f"{label}")
     for r in results:
-        status = "OK" if r["error"] is None else f"ERR({r['error']})"
+        status = "OK" if r["error"] == None else f"ERR({r['error']})"
         short = " [shortage]" if r["shortage"] else ""
         method = r.get("fetch_method") or "-"
         print(

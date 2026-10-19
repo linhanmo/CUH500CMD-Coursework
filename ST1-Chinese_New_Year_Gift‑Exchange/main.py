@@ -67,7 +67,7 @@ def propagate(assignments, used, domains, flag):
                 forced_giver = giver
                 break
 
-        if forced_giver is None:
+        if forced_giver == None:
             break
 
         recipient = next(iter(domains[forced_giver]))
@@ -85,7 +85,7 @@ def propagate(assignments, used, domains, flag):
 
 def search(assignments, used, domains, flag):
     result = propagate(assignments, used, domains, flag)
-    if result is None:
+    if result == None:
         return None
     assignments, used, domains, flag = result
 
@@ -114,7 +114,7 @@ def search(assignments, used, domains, flag):
 
         # Recurse
         solution = search(new_assignments, new_used, new_domains, new_flag)
-        if solution is not None:
+        if solution != None:
             return solution
 
     return None
@@ -142,7 +142,7 @@ def main():
 
     solution = search(assignments, used, domains, flag)
 
-    if solution is not None and validate_solution(solution):
+    if solution != None and validate_solution(solution):
         for giver in PARTICIPANTS:
             print(f"{giver} → {solution[giver]}")
     else:

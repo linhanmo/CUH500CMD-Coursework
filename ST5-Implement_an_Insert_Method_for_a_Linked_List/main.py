@@ -14,19 +14,19 @@ class SLinkedList:
 
     # Insert a new node after the first node with val_before
     def Insert(self, val_before, newdata):
-        if val_before is None:
+        if val_before == None:
             print("No node to insert after")
             return
 
-        if self.headval is None:
+        if self.headval == None:
             print("Cannot insert: the list is empty")
             return
 
         current = self.headval
-        while current is not None and current.dataval != val_before:
+        while current != None and current.dataval != val_before:
             current = current.nextval
 
-        if current is None:
+        if current == None:
             print(f"Cannot insert: node with value '{val_before}' not found")
             return
 
@@ -37,7 +37,7 @@ class SLinkedList:
     # Search
     def Search(self, val):
         current = self.headval
-        while current is not None:
+        while current != None:
             if current.dataval == val:
                 return True
             current = current.nextval
@@ -45,7 +45,7 @@ class SLinkedList:
 
     # Delete
     def Delete(self, val):
-        if self.headval is None:
+        if self.headval == None:
             return False
 
         # The head node itself must be deleted
@@ -56,7 +56,7 @@ class SLinkedList:
         # Search for the node
         prev = self.headval
         current = self.headval.nextval
-        while current is not None:
+        while current != None:
             if current.dataval == val:
                 prev.nextval = current.nextval
                 return True
@@ -67,7 +67,7 @@ class SLinkedList:
     # Existing printing logic
     def listprint(self):
         printval = self.headval
-        while printval is not None:
+        while printval != None:
             print(printval.dataval)
             printval = printval.nextval
 
@@ -76,11 +76,11 @@ class SLinkedList:
 
     def AtEnd(self, newdata):
         NewNode = Node(newdata)
-        if self.headval is None:
+        if self.headval == None:
             self.headval = NewNode
             return
         last = self.headval
-        while last.nextval:
+        while last.nextval != None:
             last = last.nextval
         last.nextval = NewNode
 
